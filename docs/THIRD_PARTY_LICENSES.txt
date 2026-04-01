@@ -1,0 +1,58 @@
+PFC-JSONL v3.3 — Third-Party Licenses
+=====================================
+ImpossibleForge | impossibleforge@gmail.com
+
+PFC-Log is built on original research and proprietary algorithms.
+The following third-party components are used and credited accordingly.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BUNDLED IN BINARY
+-----------------
+
+COMPONENT: libsais
+PURPOSE:   Suffix Array construction (used internally for BWT sorting)
+AUTHOR:    Ilya Grebnov
+SOURCE:    https://github.com/IlyaGrebnov/libsais
+LICENSE:   Apache License, Version 2.0
+
+   Copyright 2021-2024 Ilya Grebnov <ilya.grebnov@gmail.com>
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at:
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+   implied. See the License for the specific language governing
+   permissions and limitations under the License.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CLOUD FEATURES (s3-info, s3-fetch)
+-----------------------------------
+
+PFC-JSONL v3.3 uses Python's built-in urllib library for all cloud
+storage access (s3-info, s3-fetch commands). No third-party SDK
+is required or bundled.
+
+Cloud access works via pre-signed HTTPS URLs — compatible with:
+  AWS S3 / S3 Glacier Instant Retrieval
+  Azure Blob Storage (SAS URLs)
+  Cloudflare R2, Hetzner Object Storage, MinIO, Wasabi
+
+urllib is part of the Python Standard Library (PSF License).
+No additional installation required.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+All compression algorithms used in PFC-Log (BWT, MTF, RLE, rANS)
+are mathematical methods in the public domain. No additional
+third-party libraries are included in the compiled binary.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Questions? Contact: impossibleforge@gmail.com
