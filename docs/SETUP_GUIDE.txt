@@ -1,7 +1,7 @@
 PFC-JSONL v3.3 — Setup Guide
 ===========================
 
-Thank you for trying PFC-Log!
+Thank you for trying PFC-JSONL!
 Your trial license is valid for 30 days from today.
 
 REQUIREMENTS
@@ -15,13 +15,9 @@ REQUIREMENTS
 SETUP — 3 STEPS
 ---------------
 
-1. Download the Docker image:
+1. Pull the Docker image:
 
-   https://drive.google.com/file/d/1-NR__ABDY27R0rbKlWlEfinyIAu2rSfr/view?usp=sharing
-
-   Then load it:
-
-     docker load < pfc-jsonl-v3.3.tar.gz
+     docker pull impossibleforge/pfc-jsonl:v3.3
 
 2. Activate your license key:
 
@@ -33,19 +29,19 @@ SETUP — 3 STEPS
    # Compress:
    docker run --rm \
      -v $(pwd):/data \
-     pfc-jsonl:v3.3-final \
+     impossibleforge/pfc-jsonl:v3.3 \
      compress /data/access.jsonl /data/access.pfc
 
    # Decompress:
    docker run --rm \
      -v $(pwd):/data \
-     pfc-jsonl:v3.3-final \
+     impossibleforge/pfc-jsonl:v3.3 \
      decompress /data/access.pfc /data/restored.jsonl
 
    # With preset (fast / default / max):
    docker run --rm \
      -v $(pwd):/data \
-     pfc-jsonl:v3.3-final \
+     impossibleforge/pfc-jsonl:v3.3 \
      compress /data/access.jsonl /data/access.pfc --level default
 
 NOTE: The license.key file must be in the same directory as your log files
@@ -57,15 +53,15 @@ PRESETS
   default -- 32 MiB blocks, best balance (recommended)
   max     -- 128 MiB blocks, best compression ratio
 
-BENCHMARK RESULTS (1 GB Apache/Nginx logs)
+BENCHMARK RESULTS (1 GB JSONL event logs)
 ------------------------------------------
-  PFC-Log default:  6.73%  @ 14.5 MB/s compress, 32 MB/s decompress
-  gzip -6:         14.29%  (53% larger than PFC)
-  zstd -3:         14.32%  (same ratio as gzip, just faster)
-  zstd -19:         8.43%  @ 0.45 MB/s compress (26 hours/TB!)
-  bzip2 -9:         7.39%  @ 6.4 MB/s
+  PFC-JSONL default:  9.60%  @ 14.5 MB/s compress, 32 MB/s decompress
+  gzip -6:           21.70%  (2.3× the compressed size of PFC)
+  zstd -3:           18.80%  (1.96× the compressed size of PFC)
+  zstd -19:          10.00%  @ 0.45 MB/s compress (26 hours/TB!)
+  bzip2 -9:          13.10%  @ 6.4 MB/s
 
-  PFC-Log is #1 — best ratio at high speed.
+  PFC-JSONL is #1 — best ratio at high speed.
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -82,14 +78,14 @@ Show basic file info (size, ratio, blocks, timestamp range):
 
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     info /data/access.pfc
 
 Show detailed block structure (offsets, sizes, timestamps per block):
 
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     info /data/access.pfc --blocks
 
 Example output (--blocks):
@@ -110,25 +106,25 @@ Useful for spot-checking recent logs or sampling specific time windows.
 
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     seek-block 1 /data/access.pfc
 
   # To a file:
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     seek-block 1 /data/access.pfc /data/block1.jsonl
 
   # To stdout (pipe-friendly):
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     seek-block 1 /data/access.pfc - | grep -a "ERROR"
 
   # Count matching lines:
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     seek-block 1 /data/access.pfc - | grep -ac "POST"
 
 Note: Use grep -a (not plain grep) when piping seek-block output to
@@ -152,13 +148,13 @@ Only the relevant blocks are decompressed — no full-file scan needed.
   # Show which blocks match (no decompression):
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     query /data/access.pfc --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59"
 
   # Decompress matching blocks to file:
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     query /data/access.pfc \
       --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59" \
       --out /data/march1.jsonl
@@ -166,7 +162,7 @@ Only the relevant blocks are decompressed — no full-file scan needed.
   # Decompress matching blocks to stdout:
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     query /data/access.pfc \
       --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59" \
       --out -
@@ -178,7 +174,7 @@ during compression, located in the same directory).
 
 ── TIMESTAMP INDEX ──────────────────────────────────────────
 
-During compression, PFC-Log automatically creates a .pfc.idx file
+During compression, PFC-JSONL automatically creates a .pfc.idx file
 alongside the .pfc file. This index stores the timestamp range
 for each block, enabling fast time-range queries.
 
@@ -192,7 +188,7 @@ To compress without generating an index:
 
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     compress /data/access.jsonl /data/access.pfc --no-index
 
 
@@ -214,16 +210,16 @@ Why pre-signed URLs?
   no vendor lock-in. One mechanism works everywhere.
 
 Egress savings:
-  10 TB archive, 1-hour query → PFC downloads ~24 MB instead of full file
+  10 TB archive, 1-hour query → PFC downloads ~29 MB instead of full file
   That's 99.9%+ egress reduction vs downloading the full archive.
-  At $0.09/GB: gzip full download = $129 per query. PFC = $0.002.
+  At $0.09/GB: gzip full download = $129 per query. PFC = $0.003.
 
 
 STEP 1 — Compress locally (as normal):
 
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     compress /data/access.jsonl /data/access.pfc
 
   This produces two files:
@@ -268,7 +264,7 @@ STEP 4 — Query directly from cloud (no full download):
   # Time-range query (requires --idx-url for .pfc.idx):
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
       --idx-url "https://my-bucket.s3.amazonaws.com/logs/access.pfc.idx?X-Amz-..." \
       --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59" \
@@ -276,25 +272,25 @@ STEP 4 — Query directly from cloud (no full download):
 
   # Show file metadata from cloud (no download of data blocks):
   docker run --rm \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     s3-info "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..."
 
   # Show detailed block table:
   docker run --rm \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     s3-info "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." --blocks
 
   # Fetch specific blocks by index (no .pfc.idx needed):
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
       --blocks 2 3 --out /data/blocks23.jsonl
 
   # Fetch a block range:
   docker run --rm \
     -v $(pwd):/data \
-    pfc-jsonl:v3.3-final \
+    impossibleforge/pfc-jsonl:v3.3 \
     s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
       --block-range 1-4 --out /data/blocks1to4.jsonl
 
@@ -311,19 +307,19 @@ S3 GLACIER NOTE:
 FULL COMMAND REFERENCE
 ----------------------
 
-  pfc-jsonl:v3.3-final --help
-  pfc-jsonl:v3.3-final compress --help
-  pfc-jsonl:v3.3-final decompress --help
-  pfc-jsonl:v3.3-final info --help
-  pfc-jsonl:v3.3-final seek-block --help
-  pfc-jsonl:v3.3-final query --help
-  pfc-jsonl:v3.3-final s3-info --help
-  pfc-jsonl:v3.3-final s3-fetch --help
+  impossibleforge/pfc-jsonl:v3.3 --help
+  impossibleforge/pfc-jsonl:v3.3 compress --help
+  impossibleforge/pfc-jsonl:v3.3 decompress --help
+  impossibleforge/pfc-jsonl:v3.3 info --help
+  impossibleforge/pfc-jsonl:v3.3 seek-block --help
+  impossibleforge/pfc-jsonl:v3.3 query --help
+  impossibleforge/pfc-jsonl:v3.3 s3-info --help
+  impossibleforge/pfc-jsonl:v3.3 s3-fetch --help
 
 
 PRIVACY & DATA SECURITY
 -----------------------
-  PFC-Log makes NO network connections for compress/decompress/query
+  PFC-JSONL makes NO network connections for compress/decompress/query
   operations — ever. s3-fetch only connects when you explicitly
   provide a pre-signed URL.
 
@@ -336,7 +332,7 @@ PRIVACY & DATA SECURITY
 
     docker run --rm --network none \
       -v $(pwd):/data \
-      pfc-jsonl:v3.3-final \
+      impossibleforge/pfc-jsonl:v3.3 \
       compress /data/access.jsonl /data/access.pfc
 
   It works identically with no network access.
@@ -348,5 +344,5 @@ SUPPORT & CONTACT
 Questions or feedback — just reply to this email.
 
 --
-ImpossibleForge | PFC-Log
+ImpossibleForge | PFC-JSONL
 impossibleforge@gmail.com
