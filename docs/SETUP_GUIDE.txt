@@ -1,0 +1,352 @@
+PFC-JSONL v3.3 — Setup Guide
+===========================
+
+Thank you for trying PFC-Log!
+Your trial license is valid for 30 days from today.
+
+REQUIREMENTS
+------------
+- Linux x86_64 (Intel/AMD) — ARM64 not supported (no AWS Graviton / Apple Silicon)
+- Docker Engine 20.10 or newer
+- RAM: 512 MB free minimum (1 GB recommended)
+- Disk: ~200 MB for image + input file size + ~10% for compressed output
+  (Example: 10 GB log file → needs ~11 GB free disk space)
+
+SETUP — 3 STEPS
+---------------
+
+1. Download the Docker image:
+
+   https://drive.google.com/file/d/1-NR__ABDY27R0rbKlWlEfinyIAu2rSfr/view?usp=sharing
+
+   Then load it:
+
+     docker load < pfc-jsonl-v3.3.tar.gz
+
+2. Activate your license key:
+
+   Copy the attached license.key file into the same directory
+   as your log files. No editing needed — it's ready to use.
+
+3. Compress & Decompress:
+
+   # Compress:
+   docker run --rm \
+     -v $(pwd):/data \
+     pfc-jsonl:v3.3-final \
+     compress /data/access.jsonl /data/access.pfc
+
+   # Decompress:
+   docker run --rm \
+     -v $(pwd):/data \
+     pfc-jsonl:v3.3-final \
+     decompress /data/access.pfc /data/restored.jsonl
+
+   # With preset (fast / default / max):
+   docker run --rm \
+     -v $(pwd):/data \
+     pfc-jsonl:v3.3-final \
+     compress /data/access.jsonl /data/access.pfc --level default
+
+NOTE: The license.key file must be in the same directory as your log files
+(that directory is mounted as /data inside the container).
+
+PRESETS
+-------
+  fast    --  8 MiB blocks, maximum speed
+  default -- 32 MiB blocks, best balance (recommended)
+  max     -- 128 MiB blocks, best compression ratio
+
+BENCHMARK RESULTS (1 GB Apache/Nginx logs)
+------------------------------------------
+  PFC-Log default:  6.73%  @ 14.5 MB/s compress, 32 MB/s decompress
+  gzip -6:         14.29%  (53% larger than PFC)
+  zstd -3:         14.32%  (same ratio as gzip, just faster)
+  zstd -19:         8.43%  @ 0.45 MB/s compress (26 hours/TB!)
+  bzip2 -9:         7.39%  @ 6.4 MB/s
+
+  PFC-Log is #1 — best ratio at high speed.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RANDOM ACCESS FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You can inspect, query, and partially decompress .pfc files without
+decompressing the entire file.
+
+
+── INFO: Inspect a compressed file ──────────────────────────
+
+Show basic file info (size, ratio, blocks, timestamp range):
+
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    info /data/access.pfc
+
+Show detailed block structure (offsets, sizes, timestamps per block):
+
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    info /data/access.pfc --blocks
+
+Example output (--blocks):
+  Block     Byte Offset     Comp Size     Orig Size
+      0              30     7,057,783    33,554,432
+      1       7,057,813     6,552,803    33,554,432
+
+  Hint: use these offsets with HTTP Range requests (S3, Azure, etc.)
+
+Note: Timestamp ranges per block are stored in the .pfc.idx file.
+Use the query command (without --out) to see which blocks cover a time range.
+
+
+── SEEK-BLOCK: Decompress one block only ────────────────────
+
+Decompress a single block without touching the rest of the file.
+Useful for spot-checking recent logs or sampling specific time windows.
+
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    seek-block 1 /data/access.pfc
+
+  # To a file:
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    seek-block 1 /data/access.pfc /data/block1.jsonl
+
+  # To stdout (pipe-friendly):
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    seek-block 1 /data/access.pfc - | grep -a "ERROR"
+
+  # Count matching lines:
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    seek-block 1 /data/access.pfc - | grep -ac "POST"
+
+Note: Use grep -a (not plain grep) when piping seek-block output to
+stdout. Log data may contain non-ASCII characters that cause plain
+grep to treat the stream as binary. grep -a forces text mode.
+
+Note: Blocks are 0-indexed. Block 0 is always the preprocessor
+dictionary and is very small — user log data starts at block 1.
+
+Note on block boundaries: Because log preprocessing tokens can span
+block edges, individual seek-block output may differ by a few bytes
+from the exact corresponding slice of the full decompression.
+This is expected behavior — for byte-exact results, use decompress.
+
+
+── QUERY: Time-range search ─────────────────────────────────
+
+Search for log lines within a specific time window.
+Only the relevant blocks are decompressed — no full-file scan needed.
+
+  # Show which blocks match (no decompression):
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    query /data/access.pfc --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59"
+
+  # Decompress matching blocks to file:
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    query /data/access.pfc \
+      --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59" \
+      --out /data/march1.jsonl
+
+  # Decompress matching blocks to stdout:
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    query /data/access.pfc \
+      --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59" \
+      --out -
+
+Timestamps use ISO-8601 format (UTC). Requires that the .pfc.idx
+index file is present alongside the .pfc file (auto-generated
+during compression, located in the same directory).
+
+
+── TIMESTAMP INDEX ──────────────────────────────────────────
+
+During compression, PFC-Log automatically creates a .pfc.idx file
+alongside the .pfc file. This index stores the timestamp range
+for each block, enabling fast time-range queries.
+
+  access.pfc      ← compressed data
+  access.pfc.idx  ← timestamp index (auto-generated, ~1 KB)
+
+Keep both files together — whether on local disk or in cloud storage.
+If the .idx file is missing, query will fall back to full-file decompression.
+
+To compress without generating an index:
+
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    compress /data/access.jsonl /data/access.pfc --no-index
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+S3 / CLOUD STORAGE — DIRECT BLOCK ACCESS (NEW IN v3.3)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PFC-JSONL v3.3 supports direct cloud access via pre-signed URLs —
+no SDK, no credentials inside the container, no dependencies to install.
+
+Works with any storage that supports HTTP Range requests:
+  AWS S3 / S3 Glacier Instant Retrieval
+  Azure Blob Storage (SAS URLs)
+  Cloudflare R2, Hetzner Object Storage, Wasabi, MinIO, Backblaze B2
+
+Why pre-signed URLs?
+  The URL carries its own authentication — PFC just makes standard
+  HTTP requests. No AWS credentials inside the container, no SDK updates,
+  no vendor lock-in. One mechanism works everywhere.
+
+Egress savings:
+  10 TB archive, 1-hour query → PFC downloads ~24 MB instead of full file
+  That's 99.9%+ egress reduction vs downloading the full archive.
+  At $0.09/GB: gzip full download = $129 per query. PFC = $0.002.
+
+
+STEP 1 — Compress locally (as normal):
+
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    compress /data/access.jsonl /data/access.pfc
+
+  This produces two files:
+    access.pfc      ← compressed archive
+    access.pfc.idx  ← timestamp index (~1 KB, auto-generated)
+
+
+STEP 2 — Upload BOTH files to your cloud storage:
+
+  # AWS S3:
+  aws s3 cp access.pfc      s3://my-bucket/logs/
+  aws s3 cp access.pfc.idx  s3://my-bucket/logs/
+
+  # Azure:
+  az storage blob upload -f access.pfc      -c logs -n access.pfc
+  az storage blob upload -f access.pfc.idx  -c logs -n access.pfc.idx
+
+  Always upload BOTH files. The .pfc.idx enables fast block lookup.
+
+
+STEP 3 — Generate pre-signed URLs:
+
+  # AWS (valid for 1 hour — adjust --expires-in as needed):
+  aws s3 presign s3://my-bucket/logs/access.pfc     --expires-in 3600
+  aws s3 presign s3://my-bucket/logs/access.pfc.idx --expires-in 3600
+
+  # Azure (SAS URL):
+  az storage blob generate-sas --full-uri \
+    --account-name ACCOUNT --container-name logs \
+    --name access.pfc --permissions r --expiry 2025-12-31T00:00:00Z
+
+  # Hetzner / Cloudflare R2 / Wasabi / MinIO:
+  Use your provider's presign command or dashboard.
+  All S3-compatible providers support pre-signed URLs.
+
+  # rclone (works with all providers):
+  rclone link remote:my-bucket/logs/access.pfc
+
+
+STEP 4 — Query directly from cloud (no full download):
+
+  # Time-range query (requires --idx-url for .pfc.idx):
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
+      --idx-url "https://my-bucket.s3.amazonaws.com/logs/access.pfc.idx?X-Amz-..." \
+      --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59" \
+      --out /data/march1.jsonl
+
+  # Show file metadata from cloud (no download of data blocks):
+  docker run --rm \
+    pfc-jsonl:v3.3-final \
+    s3-info "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..."
+
+  # Show detailed block table:
+  docker run --rm \
+    pfc-jsonl:v3.3-final \
+    s3-info "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." --blocks
+
+  # Fetch specific blocks by index (no .pfc.idx needed):
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
+      --blocks 2 3 --out /data/blocks23.jsonl
+
+  # Fetch a block range:
+  docker run --rm \
+    -v $(pwd):/data \
+    pfc-jsonl:v3.3-final \
+    s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
+      --block-range 1-4 --out /data/blocks1to4.jsonl
+
+
+S3 GLACIER NOTE:
+  S3 Glacier Instant Retrieval supports HTTP Range requests natively —
+  PFC s3-fetch works directly.
+  For Glacier Flexible / Deep Archive, restore the object first
+  (this is AWS-side), then use the pre-signed URL of the restored copy.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FULL COMMAND REFERENCE
+----------------------
+
+  pfc-jsonl:v3.3-final --help
+  pfc-jsonl:v3.3-final compress --help
+  pfc-jsonl:v3.3-final decompress --help
+  pfc-jsonl:v3.3-final info --help
+  pfc-jsonl:v3.3-final seek-block --help
+  pfc-jsonl:v3.3-final query --help
+  pfc-jsonl:v3.3-final s3-info --help
+  pfc-jsonl:v3.3-final s3-fetch --help
+
+
+PRIVACY & DATA SECURITY
+-----------------------
+  PFC-Log makes NO network connections for compress/decompress/query
+  operations — ever. s3-fetch only connects when you explicitly
+  provide a pre-signed URL.
+
+  - No telemetry, no usage tracking, no data collection
+  - No license server — trial validity is checked against local system clock only
+  - Your log files never leave your server
+  - Fully GDPR-compliant by design (all processing is local)
+
+  You can verify compress/decompress with no network access:
+
+    docker run --rm --network none \
+      -v $(pwd):/data \
+      pfc-jsonl:v3.3-final \
+      compress /data/access.jsonl /data/access.pfc
+
+  It works identically with no network access.
+
+SUPPORT & CONTACT
+-----------------
+  Email:    impossibleforge@gmail.com
+
+Questions or feedback — just reply to this email.
+
+--
+ImpossibleForge | PFC-Log
+impossibleforge@gmail.com
