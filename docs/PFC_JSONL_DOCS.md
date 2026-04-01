@@ -56,12 +56,10 @@ PFC-Log is a **lossless log file compressor** specialized for Apache and Nginx a
 - Docker Engine 20.10+
 - ~200 MB disk for the image + your log files
 
-### Step 1 — Download and load the Docker image
-
-Download: https://drive.google.com/file/d/1-NR__ABDY27R0rbKlWlEfinyIAu2rSfr/view?usp=sharing
+### Step 1 — Pull the Docker image
 
 ```bash
-docker load < pfc-jsonl-v3.3.tar.gz
+docker pull impossibleforge/pfc-jsonl:v3.3
 ```
 
 ### Step 2 — Place your license key
