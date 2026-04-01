@@ -82,8 +82,7 @@ Supported timestamp fields: `timestamp`, `ts`, `time`, `@timestamp` (ISO 8601 or
 
 PFC-JSONL is **proprietary software**. A free 30-day trial is available.
 
-📧 **Request trial:** impossibleforge@gmail.com
-🛒 **Buy license:** [impossibleforge.lemonsqueezy.com/buy/pfc-jsonl](https://impossibleforge.lemonsqueezy.com/buy/pfc-jsonl)
+📧 **Trial or license inquiry:** impossibleforge@gmail.com
 
 Without a valid `license.key` file, the tool displays:
 ```
