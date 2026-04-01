@@ -416,7 +416,7 @@ PFC-JSONL uses a pipeline of algorithms designed specifically for structured eve
 Raw JSONL  →  [Preprocessor]  →  [BWT]  →  [MTF]  →  [RLE]  →  [rANS O1]  →  .pfc
 ```
 
-1. **Preprocessor** — Extracts and tokenizes repetitive JSON structure (field names, common values, timestamp patterns, log levels, service names) into compact 2-byte tokens. Reduces data by ~30-40% before the main compression pass.
+1. **Preprocessor** — Tokenizes repetitive JSONL-specific structural patterns into compact tokens before the main compression pass — the primary driver of PFC's compression advantage over general-purpose tools. Reduces data by ~30-40%.
 
 2. **BWT (Burrows-Wheeler Transform)** — Reorders bytes to cluster similar patterns together. Uses `libsais`, an SA-IS BWT implementation.
 
@@ -431,13 +431,12 @@ Each stage is applied **independently per block**, enabling parallel compression
 ### File format overview
 
 ```
-Bytes 0-21:    File header (magic, version, num_blocks, flags)
-Bytes 22-...:  Block size table (4 bytes per block)
-Block 0:       Preprocessor dictionary (token mappings)
-Block 1..N:    Compressed data blocks (each independently decompressible)
+[File header]
+[Block 0: preprocessor dictionary]
+[Block 1..N: compressed data blocks — each independently decompressible]
 ```
 
-File header is 22 bytes fixed + 4 bytes per block. On a 1 GB file with 32 blocks: 22 + 128 = 150 bytes overhead (0.000015%).
+The file header stores the block count and per-block sizes, enabling direct seeking to any block. Format overhead is negligible (< 0.001% of file size).
 
 ---
 
