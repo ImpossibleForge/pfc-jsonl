@@ -33,7 +33,7 @@ Ratios measured on real JSONL log data (8 services, mixed log levels, 115 MB / 3
 
 ## Install
 
-### Option A: Direct Binary (Linux x86_64)
+### Linux x86_64 — Direct Binary
 
 ```bash
 curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pfc_jsonl-linux-x64 \
@@ -42,20 +42,26 @@ curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pf
 pfc_jsonl --help
 ```
 
-### Option B: Docker
+> **macOS / other platforms:** coming soon. Contact **impossibleforge@gmail.com** for early access.
+
+### Docker — Compress/Decompress (v3.3)
+
+For server-side log compression pipelines (no DuckDB integration needed):
 
 ```bash
-docker pull impossibleforge/pfc-jsonl:v3.4
+docker pull impossibleforge/pfc-jsonl:v3.3
 
 # Compress
-docker run --rm -v $(pwd):/data impossibleforge/pfc-jsonl:v3.4 \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-jsonl:v3.3 \
     pfc_jsonl compress /data/events.jsonl /data/events.pfc
 
 # Query by time range
-docker run --rm -v $(pwd):/data impossibleforge/pfc-jsonl:v3.4 \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-jsonl:v3.3 \
     pfc_jsonl query --from 2025-01-15T06:00 --to 2025-01-15T08:00 \
     /data/events.pfc /data/result.jsonl
 ```
+
+> **DuckDB integration** requires the v3.4 binary (above). The Docker image (v3.3) does not include `seek-blocks`.
 
 ---
 
