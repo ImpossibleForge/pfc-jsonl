@@ -27,7 +27,7 @@ Ratios measured on real JSONL log data (8 services, mixed log levels, 115 MB / 3
 - **DuckDB Extension** — query `.pfc` files directly from SQL via `read_pfc_jsonl()` ([pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb))
 - **Binary index format** `.pfc.bidx` — fixed-size 32-byte-per-block index, directly readable by the DuckDB C++ extension
 - **`seek-blocks`** primitive — decompress multiple specific blocks in one call (used by DuckDB extension)
-- **Community Mode** — no license key required for ≤ 5 GB decompressed output per UTC day
+- **Community Mode** — no license key required for ≤ 5 GB of data processed per UTC day
 
 ---
 
@@ -110,10 +110,10 @@ The DuckDB extension calls `pfc_jsonl` as a subprocess. Install the binary first
 
 Starting with v3.4, PFC-JSONL ships with a built-in free tier:
 
-- **5 GB of decompressed output per UTC day** — tracked locally in `~/.pfc/usage.json`
+- **5 GB of data processed per UTC day** — tracked locally in `~/.pfc/usage.json`
 - **No account, no signup, no phone-home** — nothing leaves your machine
-- Works for `decompress`, `query`, `seek-block`, `seek-blocks`
-- `compress` requires a license key
+- Works for all operations: `compress`, `decompress`, `query`, `seek-block`, `seek-blocks`
+- Compress counts input bytes; decompress/query/seek-blocks count decompressed output bytes
 
 For production use (> 5 GB/day): contact **impossibleforge@gmail.com**
 
@@ -146,7 +146,7 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 
 PFC-JSONL is **proprietary software**.
 
-- **Community Mode** (v3.4+): free for ≤ 5 GB decompressed/day, no key required
+- **Community Mode** (v3.4+): free for ≤ 5 GB/day, no key required (all operations)
 - **Production license**: unlimited throughput — contact **impossibleforge@gmail.com**
 - **White-label / OEM**: integrations and partnership available on request
 
