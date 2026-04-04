@@ -161,7 +161,7 @@ Starting with v3.4, PFC-JSONL ships with a built-in free tier:
 - **5 GB of data processed per UTC day** — tracked locally in `~/.pfc/usage.json`
 - **No account, no signup, no phone-home** — nothing leaves your machine
 - Works for all operations: `compress`, `decompress`, `query`, `seek-block`, `seek-blocks`
-- Compress counts input bytes; decompress/query/seek-blocks count decompressed output bytes
+- Compress counts input bytes; decompress/query/seek-block/seek-blocks count decompressed output bytes
 
 For production use (> 5 GB/day): contact **impossibleforge@gmail.com**
 
