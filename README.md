@@ -44,9 +44,10 @@ curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pf
 pfc_jsonl --help
 ```
 
-> **macOS / other platforms:** coming soon. Contact **impossibleforge@gmail.com** for early access.
+> **macOS:** Binary coming soon. Contact **impossibleforge@gmail.com** for early access.
+> **Windows:** No native binary. Use WSL2 or a Linux machine.
 
-### Docker — Compress/Decompress (v3.3)
+### Docker — Compress/Decompress (v3.3, not yet updated to v3.4)
 
 For server-side log compression pipelines (no DuckDB integration needed):
 
