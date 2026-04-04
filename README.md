@@ -6,6 +6,8 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://hub.docker.com/r/impossibleforge/pfc-jsonl)
 [![Version](https://img.shields.io/badge/Version-3.4-green.svg)]()
 [![DuckDB Extension](https://img.shields.io/badge/DuckDB-Extension-orange.svg)](https://github.com/ImpossibleForge/pfc-duckdb)
+[![Fluent Bit](https://img.shields.io/badge/Fluent%20Bit-Output-green.svg)](https://github.com/ImpossibleForge/pfc-fluentbit)
+[![PyPI](https://img.shields.io/badge/PyPI-pfc--jsonl-blue.svg)](https://pypi.org/project/pfc-jsonl/)
 
 ---
 
@@ -93,6 +95,49 @@ FROM read_pfc_jsonl(
 
 The DuckDB extension calls `pfc_jsonl` as a subprocess. Install the binary first (see above).
 See [pfc-duckdb on GitHub](https://github.com/ImpossibleForge/pfc-duckdb) for manual install instructions.
+
+---
+
+## Fluent Bit Integration
+
+Stream logs directly from Fluent Bit into compressed `.pfc` archives using [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit):
+
+```ini
+# fluent-bit.conf
+[OUTPUT]
+    Name    tcp
+    Match   *
+    Host    127.0.0.1
+    Port    5170
+    Format  json_lines
+```
+
+```bash
+# Start the forwarder daemon (Python, stdlib only)
+python3 pfc_forwarder.py --output-dir /var/log/pfc --buffer-mb 32
+```
+
+Archives are written to `/var/log/pfc/` and can be queried with DuckDB or the Python package.
+
+---
+
+## Python Package
+
+Use the [pfc Python package](https://github.com/ImpossibleForge/pfc-py) (PyPI: `pfc-jsonl`) to compress, decompress, and query `.pfc` files from Python:
+
+```bash
+pip install pfc-jsonl
+```
+
+```python
+import pfc
+
+pfc.compress("logs/app.jsonl", "logs/app.pfc")
+pfc.query("logs/app.pfc",
+          from_ts="2026-01-15T08:00:00",
+          to_ts="2026-01-15T09:00:00",
+          output_path="logs/morning.jsonl")
+```
 
 ---
 
