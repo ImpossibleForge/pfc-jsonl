@@ -15,12 +15,12 @@
 
 | Tool | Ratio on JSONL Logs | Block Access | 10 TB archive, 1h query |
 |------|---------------------|--------------|-------------------------|
-| **PFC-JSONL** | **~10 %** | ✅ Block-level | **~29 MB download** |
-| gzip | ~14.5 % | ❌ Full file | ~1.43 TB |
-| zstd | ~16 % | ❌ Full file | ~1.43 TB |
+| **PFC-JSONL** | **~9 %** | ✅ Block-level | **~26 MB download** |
+| gzip | ~12 % | ❌ Full file | ~1.43 TB |
+| zstd | ~14.2 % | ❌ Full file | ~1.43 TB |
 
-**PFC-JSONL is 26–34 % smaller than gzip/zstd on typical structured log data.**
-Ratios measured on real JSONL log data (8 services, mixed log levels, 115 MB / 3 M lines).
+**PFC-JSONL default is 25% smaller than gzip and 37% smaller than zstd at typical settings.**
+Ratios measured on 200 MB JSONL log data (8 services, mixed log levels, ~961K lines), PFC-JSONL v3.4.
 
 ---
 
