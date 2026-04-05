@@ -6,7 +6,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://hub.docker.com/r/impossibleforge/pfc-jsonl)
 [![Version](https://img.shields.io/badge/Version-3.4-green.svg)]()
 [![DuckDB Extension](https://img.shields.io/badge/DuckDB-Extension-orange.svg)](https://github.com/ImpossibleForge/pfc-duckdb)
-[![Fluent Bit](https://img.shields.io/badge/Fluent%20Bit-Output-green.svg)](https://github.com/ImpossibleForge/pfc-fluentbit)
+[![Fluent Bit](https://img.shields.io/badge/Fluent%20Bit-Ready-green.svg)](https://github.com/ImpossibleForge/pfc-fluentbit)
 [![PyPI](https://img.shields.io/badge/PyPI-pfc--jsonl-blue.svg)](https://pypi.org/project/pfc-jsonl/)
 
 ---
@@ -148,7 +148,7 @@ pfc.query("logs/app.pfc",
 |---------|-------------|
 | `pfc_jsonl compress <input> <output>` | Compress JSONL → `.pfc` + `.pfc.bidx` |
 | `pfc_jsonl decompress <input> <output>` | Full decompression |
-| `pfc_jsonl query --from X --to Y <input>` | Decompress blocks matching time range |
+| `pfc_jsonl query <input> --from X --to Y --out <output>` | Decompress blocks matching time range |
 | `pfc_jsonl seek-block N <input> [output]` | Extract single block by index |
 | `pfc_jsonl seek-blocks <input> --blocks N [N...]` | Extract multiple blocks (DuckDB primitive) |
 | `pfc_jsonl info <input>` | Show block table + timestamp ranges |
