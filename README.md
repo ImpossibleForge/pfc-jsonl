@@ -2,7 +2,7 @@
 
 > Compress structured log files (JSONL, JSON Lines) to **~10% of original size** — with timestamp-based queries that decompress only the blocks you need.
 
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
+[![License: Free for personal use](https://img.shields.io/badge/License-Free%20for%20personal%20use-blue.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://hub.docker.com/r/impossibleforge/pfc-jsonl)
 [![Version](https://img.shields.io/badge/Version-3.4-green.svg)]()
 [![DuckDB Extension](https://img.shields.io/badge/DuckDB-Extension-orange.svg)](https://github.com/ImpossibleForge/pfc-duckdb)
@@ -29,7 +29,7 @@ Ratios measured on 200 MB JSONL log data (8 services, mixed log levels, ~961K li
 - **DuckDB Extension** — query `.pfc` files directly from SQL via `read_pfc_jsonl()` ([pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb))
 - **Binary index format** `.pfc.bidx` — fixed-size 32-byte-per-block index, directly readable by the DuckDB C++ extension
 - **`seek-blocks`** primitive — decompress multiple specific blocks in one call (used by DuckDB extension)
-- **Community Mode** — no license key required for ≤ 5 GB of data processed per UTC day
+- **Free for personal and open-source use** — no account, no signup required
 
 ---
 
@@ -155,18 +155,6 @@ pfc.query("logs/app.pfc",
 
 ---
 
-## Community Mode
-
-Starting with v3.4, PFC-JSONL ships with a built-in free tier:
-
-- **5 GB of data processed per UTC day** — tracked locally in `~/.pfc/usage.json`
-- **No account, no signup, no phone-home** — nothing leaves your machine
-- Works for all operations: `compress`, `decompress`, `query`, `seek-block`, `seek-blocks`
-- Compress counts input bytes; decompress/query/seek-block/seek-blocks count decompressed output bytes
-
-For production use (> 5 GB/day): contact **impossibleforge@gmail.com**
-
----
 
 ## Input Format
 
@@ -193,11 +181,10 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 
 ## License
 
-PFC-JSONL is **proprietary software**.
+PFC-JSONL is **free for personal and open-source use**.
 
-- **Community Mode** (v3.4+): free for ≤ 5 GB/day, no key required (all operations)
-- **Production license**: unlimited throughput — contact **impossibleforge@gmail.com**
-- **White-label / OEM**: integrations and partnership available on request
+Commercial use (production pipelines, paid services, or business operations) requires a license.
+Contact: **impossibleforge@gmail.com**
 
 ---
 
