@@ -1,23 +1,26 @@
-Proprietary Software License
+PFC-JSONL Software License
 
 Copyright (c) 2026 ImpossibleForge. All rights reserved.
 
-This software is proprietary and confidential. The source code and compiled
-binaries are protected by copyright law and international treaties.
+PERSONAL AND OPEN-SOURCE USE
+Free of charge for personal, educational, and open-source projects.
+No license key, no account, no usage limits.
 
-EVALUATION LICENSE
-This software is provided for evaluation purposes only. You may:
-- Download and run the software for evaluation
-- Test the software on your own data
+COMMERCIAL USE
+Commercial use — meaning use by a business or organization that generates
+revenue, or integration into a commercial product or service — requires a
+written license from ImpossibleForge.
 
-You may NOT:
-- Use this software in production without a valid commercial license
-- Reverse engineer, decompile, or disassemble the software
-- Redistribute, sublicense, or sell copies of the software
-- Remove or alter any proprietary notices
+To obtain a commercial license:
+  Email: impossibleforge@gmail.com
+  Website: https://github.com/ImpossibleForge/pfc-jsonl
 
-COMMERCIAL LICENSE
-For production use, white-label licensing, or OEM integration:
-Contact: impossibleforge@gmail.com
+RESTRICTIONS
+- You may not redistribute this software or its binaries as part of a
+  competing product without a written license.
+- You may not remove or alter copyright notices.
+- The source code of the pfc_jsonl binary is proprietary and confidential.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL IMPOSSIBLEFORGE BE LIABLE FOR ANY CLAIM, DAMAGES
+OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
