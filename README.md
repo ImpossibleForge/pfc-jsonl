@@ -1,6 +1,11 @@
 # PFC-JSONL — High-Ratio JSONL Compressor with Block-Level Random Access
 
-> Compress structured log files (JSONL, JSON Lines) to **~10% of original size** — with timestamp-based queries that decompress only the blocks you need.
+Most log archives are compressed. Most queries touch one hour. Most tools make you decompress everything anyway.
+
+PFC-JSONL stores a block index alongside every compressed file. Query a time window with DuckDB and only the relevant blocks are decompressed — the rest stays on disk, untouched.
+
+> **~9% compression ratio** (25% smaller than gzip, 37% smaller than zstd on typical JSONL logs).
+> **30×–700× faster** time-range queries vs. full-file decompression.
 
 [![License: Free for personal use](https://img.shields.io/badge/License-Free%20for%20personal%20use-blue.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://hub.docker.com/r/impossibleforge/pfc-jsonl)
