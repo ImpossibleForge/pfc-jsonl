@@ -70,12 +70,9 @@ docker run --rm -v $(pwd):/data impossibleforge/pfc-jsonl:v3.3 \
 
 ## DuckDB Extension
 
-> **Status:** Submitted to DuckDB community extensions — pending review ([PR #1679](https://github.com/duckdb/community-extensions/pull/1679)). Once merged, install with one line.
-
 Query `.pfc` files directly from DuckDB SQL — no intermediate decompression step:
 
 ```sql
--- Once available in DuckDB community extensions:
 INSTALL pfc FROM community;
 LOAD pfc;
 LOAD json;
