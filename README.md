@@ -144,6 +144,30 @@ pfc.query("logs/app.pfc",
 
 ---
 
+## Migrate Existing Archives
+
+Already have logs stored as gzip, zstd, bzip2, or lz4 — on disk, on S3, on Azure, or on GCS?
+
+**[pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate)** converts them in one command, directly in your storage (no egress charges):
+
+```bash
+pip install pfc-migrate[all]
+
+# Local
+pfc-migrate convert --dir /var/log/archive/ --output-dir /var/log/pfc/ -v
+
+# S3
+pfc-migrate s3 --bucket my-logs --prefix 2025/ --out-bucket my-logs-pfc --out-prefix pfc/
+
+# Azure Blob
+pfc-migrate azure --container my-logs --prefix 2025/ --out-container my-logs-pfc --connection-string "..."
+
+# GCS
+pfc-migrate gcs --bucket my-logs --prefix 2025/ --out-bucket my-logs-pfc
+```
+
+---
+
 ## Commands
 
 | Command | Description |
