@@ -7,7 +7,7 @@ PFC-JSONL stores a block index alongside every compressed file. Query a time win
 > **~9% compression ratio** (25% smaller than gzip, 37% smaller than zstd on typical JSONL logs).
 > **30×–700× faster** time-range queries vs. full-file decompression.
 
-[![License: Free for personal use](https://img.shields.io/badge/License-Free%20for%20personal%20use-blue.svg)](LICENSE)
+[![License: Free for personal use](https://img.shields.io/badge/License-Free%20for%20personal%20use-blue.svg)](https://github.com/ImpossibleForge/pfc-jsonl/blob/main/LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://hub.docker.com/r/impossibleforge/pfc-jsonl)
 [![Version](https://img.shields.io/badge/Version-3.4-green.svg)]()
 [![DuckDB Extension](https://img.shields.io/badge/DuckDB-Extension-orange.svg)](https://github.com/ImpossibleForge/pfc-duckdb)
