@@ -49,7 +49,7 @@ curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pf
 pfc_jsonl --help
 ```
 
-> **macOS:** Binary coming soon. Contact **impossibleforge@gmail.com** for early access.
+> **macOS:** Binary coming soon. Contact **info@impossibleforge.com** for early access.
 > **Windows:** No native binary. Use WSL2 or a Linux machine.
 
 ### Docker — Compress/Decompress (v3.3, not yet updated to v3.4)
@@ -210,7 +210,7 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 PFC-JSONL is **free for personal and open-source use**.
 
 Commercial use (production pipelines, paid services, or business operations) requires a license.
-Contact: **impossibleforge@gmail.com**
+Contact: **info@impossibleforge.com**
 
 ---
 
