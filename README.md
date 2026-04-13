@@ -43,6 +43,7 @@ Ratios measured on 200 MB JSONL log data (8 services, mixed log levels, ~961K li
 
 ### Linux x86_64 — Direct Binary
 
+**Linux x86_64:**
 ```bash
 curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pfc_jsonl-linux-x64 \
      -o /usr/local/bin/pfc_jsonl && chmod +x /usr/local/bin/pfc_jsonl
@@ -50,7 +51,16 @@ curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pf
 pfc_jsonl --help
 ```
 
-> **macOS:** Binary coming soon. Contact **info@impossibleforge.com** for early access.
+**macOS (Apple Silicon M1/M2/M3/M4):**
+```bash
+curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pfc_jsonl-macos-arm64 \
+     -o /usr/local/bin/pfc_jsonl && chmod +x /usr/local/bin/pfc_jsonl
+
+pfc_jsonl --help
+```
+
+> **macOS Intel (x64):** Binary coming soon.
+> **Contact:** info@impossibleforge.com
 > **Windows:** No native binary. Use WSL2 or a Linux machine.
 
 ### Docker — Compress/Decompress (v3.3, not yet updated to v3.4)
