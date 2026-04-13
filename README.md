@@ -8,8 +8,7 @@ PFC-JSONL stores a block index alongside every compressed file. Query a time win
 > **30×–700× faster** time-range queries vs. full-file decompression.
 
 [![License: Free for personal use](https://img.shields.io/badge/License-Free%20for%20personal%20use-blue.svg)](https://github.com/ImpossibleForge/pfc-jsonl/blob/main/LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://hub.docker.com/r/impossibleforge/pfc-jsonl)
-[![Version](https://img.shields.io/badge/Version-3.4-green.svg)]()
+[![Version](https://img.shields.io/badge/Version-3.4.4-green.svg)]()
 [![DuckDB Extension](https://img.shields.io/badge/DuckDB-Extension-orange.svg)](https://github.com/ImpossibleForge/pfc-duckdb)
 [![Fluent Bit](https://img.shields.io/badge/Fluent%20Bit-Ready-green.svg)](https://github.com/ImpossibleForge/pfc-fluentbit)
 [![PyPI](https://img.shields.io/badge/PyPI-pfc--jsonl-blue.svg)](https://pypi.org/project/pfc-jsonl/)
@@ -41,7 +40,7 @@ Ratios measured on 200 MB JSONL log data (8 services, mixed log levels, ~961K li
 
 ## Install
 
-### Linux x86_64 — Direct Binary
+### Linux x86_64 & macOS ARM64 — Direct Binary
 
 **Linux x86_64:**
 ```bash
@@ -62,25 +61,6 @@ pfc_jsonl --help
 > **macOS Intel (x64):** Binary coming soon.
 > **Contact:** info@impossibleforge.com
 > **Windows:** No native binary. Use WSL2 or a Linux machine.
-
-### Docker — Compress/Decompress (v3.3, not yet updated to v3.4)
-
-For server-side log compression pipelines (no DuckDB integration needed):
-
-```bash
-docker pull impossibleforge/pfc-jsonl:v3.3
-
-# Compress
-docker run --rm -v $(pwd):/data impossibleforge/pfc-jsonl:v3.3 \
-    pfc_jsonl compress /data/events.jsonl /data/events.pfc
-
-# Query by time range
-docker run --rm -v $(pwd):/data impossibleforge/pfc-jsonl:v3.3 \
-    pfc_jsonl query --from 2025-01-15T06:00 --to 2025-01-15T08:00 \
-    /data/events.pfc /data/result.jsonl
-```
-
-> **DuckDB integration** requires the v3.4 binary (above). The Docker image (v3.3) does not include `seek-blocks`.
 
 ---
 
