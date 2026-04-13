@@ -99,12 +99,12 @@ Workers are capped to prevent OOM. The formula is RAM-aware and safe on shared i
 
 ---
 
-## Community Mode
+## License Model
 
-The binary tracks daily usage locally in `~/.pfc/usage.json`:
-- **5 GB/day free** — no account, no network calls
-- `compress` counts input bytes; `decompress`, `query`, `seek-blocks` count decompressed output bytes
-- Resets at midnight UTC
+**Free for personal and open-source use** — no account, no signup, no usage tracking, no network calls.
+
+Commercial use (production pipelines, paid services, or business operations) requires a written license.
+Contact: [info@impossibleforge.com](mailto:info@impossibleforge.com)
 
 ---
 
@@ -166,5 +166,6 @@ Source: [github.com/ImpossibleForge/pfc-py](https://github.com/ImpossibleForge/p
 |---------|-----------|
 | v3.0 | Current compression pipeline introduced |
 | v3.2 | Block-level random access + `.pfc.bidx` index |
-| v3.3 | Community Mode, Docker CLI |
+| v3.3 | Docker CLI, pre-signed URL cloud access |
 | v3.4 | `seek-blocks` primitive, C++-readable index, DuckDB Extension |
+| v3.4.4 | Paper License — Community Mode removed, free for personal/OSS use |
