@@ -1,8 +1,8 @@
-PFC-JSONL v3.3 — Third-Party Licenses
-=====================================
-ImpossibleForge | impossibleforge@gmail.com
+PFC-JSONL v3.4.4 — Third-Party Licenses
+========================================
+ImpossibleForge | info@impossibleforge.com
 
-PFC-Log is built on original research and proprietary algorithms.
+PFC-JSONL is built on original research and proprietary algorithms.
 The following third-party components are used and credited accordingly.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -32,27 +32,10 @@ LICENSE:   Apache License, Version 2.0
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-CLOUD FEATURES (s3-info, s3-fetch)
------------------------------------
-
-PFC-JSONL v3.3 uses Python's built-in urllib library for all cloud
-storage access (s3-info, s3-fetch commands). No third-party SDK
-is required or bundled.
-
-Cloud access works via pre-signed HTTPS URLs — compatible with:
-  AWS S3 / S3 Glacier Instant Retrieval
-  Azure Blob Storage (SAS URLs)
-  Cloudflare R2, Hetzner Object Storage, MinIO, Wasabi
-
-urllib is part of the Python Standard Library (PSF License).
-No additional installation required.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-All compression algorithms used in PFC-Log (BWT, MTF, RLE, rANS)
+All compression algorithms used in PFC-JSONL (BWT, MTF, RLE, rANS O1)
 are mathematical methods in the public domain. No additional
 third-party libraries are included in the compiled binary.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Questions? Contact: impossibleforge@gmail.com
+Questions? Contact: info@impossibleforge.com
