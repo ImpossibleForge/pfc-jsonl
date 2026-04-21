@@ -196,6 +196,20 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 
 ---
 
+
+## Related repos
+
+- [pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway) — HTTP REST gateway — ingest + query, no DuckDB
+- [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit) — live Fluent Bit → PFC pipeline
+- [pfc-vector](https://github.com/ImpossibleForge/pfc-vector) — high-performance Rust ingest daemon for Vector.dev and Telegraf
+- [pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate) — one-shot export and archive conversion
+- [pfc-py](https://github.com/ImpossibleForge/pfc-py) — Python client library for PFC
+- [pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb) — DuckDB extension for SQL queries on PFC files
+- [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) — autonomous archive daemon for CrateDB
+- [pfc-archiver-questdb](https://github.com/ImpossibleForge/pfc-archiver-questdb) — autonomous archive daemon for QuestDB
+
+---
+
 ## License
 
 PFC-JSONL is **free for personal and open-source use**.
