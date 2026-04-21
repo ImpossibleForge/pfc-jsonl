@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.so
+*.o
+*.a
+build/
+dist/
+*.egg-info/
+.env
+*.pfc
+.pfc_buffer.jsonl
+.pfc_buffer.compressing
