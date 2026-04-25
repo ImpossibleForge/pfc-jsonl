@@ -11,8 +11,12 @@ PFC-JSONL stores a block index alongside every compressed file. Query a time win
 [![Version](https://img.shields.io/badge/Version-3.4.4-green.svg)]()
 [![DuckDB Extension](https://img.shields.io/badge/DuckDB-Extension-orange.svg)](https://github.com/ImpossibleForge/pfc-duckdb)
 [![Fluent Bit](https://img.shields.io/badge/Fluent%20Bit-Ready-green.svg)](https://github.com/ImpossibleForge/pfc-fluentbit)
+[![Vector](https://img.shields.io/badge/Vector-Sink-6B40BF.svg)](https://github.com/ImpossibleForge/pfc-vector)
+[![Telegraf](https://img.shields.io/badge/Telegraf-Plugin-00acac.svg)](https://github.com/ImpossibleForge/pfc-telegraf)
+[![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-Collector-425CC7.svg)](https://github.com/ImpossibleForge/pfc-otel-collector)
 [![PyPI](https://img.shields.io/badge/PyPI-pfc--jsonl-blue.svg)](https://pypi.org/project/pfc-jsonl/)
 [![Awesome DuckDB](https://awesome.re/mentioned-badge.svg)](https://github.com/davidgasquez/awesome-duckdb)
+[![Awesome Observability](https://awesome.re/mentioned-badge.svg)](https://github.com/adriannovegil/awesome-observability)
 
 ---
 
@@ -201,7 +205,7 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 
 - [pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway) — HTTP REST gateway — ingest + query, no DuckDB
 - [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit) — live Fluent Bit → PFC pipeline
-- [pfc-vector](https://github.com/ImpossibleForge/pfc-vector) — high-performance Rust ingest daemon for Vector.dev and Telegraf
+- [pfc-vector](https://github.com/ImpossibleForge/pfc-vector) — high-performance Rust ingest daemon for Vector.dev
 - [pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate) — one-shot export and archive conversion
 - [pfc-py](https://github.com/ImpossibleForge/pfc-py) — Python client library for PFC
 - [pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb) — DuckDB extension for SQL queries on PFC files
@@ -209,6 +213,7 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 - [pfc-archiver-questdb](https://github.com/ImpossibleForge/pfc-archiver-questdb) — autonomous archive daemon for QuestDB
 - [pfc-otel-collector](https://github.com/ImpossibleForge/pfc-otel-collector) — OpenTelemetry OTLP/HTTP log exporter
 - [pfc-kafka-consumer](https://github.com/ImpossibleForge/pfc-kafka-consumer) — Kafka / Redpanda consumer → PFC
+- [pfc-telegraf](https://github.com/ImpossibleForge/pfc-telegraf) — Telegraf HTTP output plugin → PFC
 
 ---
 
