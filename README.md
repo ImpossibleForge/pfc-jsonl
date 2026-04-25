@@ -14,12 +14,8 @@ PFC-JSONL stores a block index alongside every compressed file. Query a time win
 [![Vector](https://img.shields.io/badge/Vector-Sink-6B40BF.svg)](https://github.com/ImpossibleForge/pfc-vector)
 [![Telegraf](https://img.shields.io/badge/Telegraf-Plugin-00acac.svg)](https://github.com/ImpossibleForge/pfc-telegraf)
 [![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-Collector-425CC7.svg)](https://github.com/ImpossibleForge/pfc-otel-collector)
-[![Vector](https://img.shields.io/badge/Vector-Sink-6B40BF.svg)](https://github.com/ImpossibleForge/pfc-vector)
-[![Telegraf](https://img.shields.io/badge/Telegraf-Plugin-00acac.svg)](https://github.com/ImpossibleForge/pfc-telegraf)
-[![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-Collector-425CC7.svg)](https://github.com/ImpossibleForge/pfc-otel-collector)
 [![PyPI](https://img.shields.io/badge/PyPI-pfc--jsonl-blue.svg)](https://pypi.org/project/pfc-jsonl/)
 [![Awesome DuckDB](https://awesome.re/mentioned-badge.svg)](https://github.com/davidgasquez/awesome-duckdb)
-[![Awesome Observability](https://awesome.re/mentioned-badge.svg)](https://github.com/adriannovegil/awesome-observability)
 [![Awesome Observability](https://awesome.re/mentioned-badge.svg)](https://github.com/adriannovegil/awesome-observability)
 
 ---
