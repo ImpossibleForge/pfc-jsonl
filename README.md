@@ -227,6 +227,7 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 - [pfc-telegraf](https://github.com/ImpossibleForge/pfc-telegraf) — Telegraf HTTP output plugin → PFC
 - [pfc-otel-collector](https://github.com/ImpossibleForge/pfc-otel-collector) — OpenTelemetry OTLP/HTTP → PFC
 - [pfc-kafka-consumer](https://github.com/ImpossibleForge/pfc-kafka-consumer) — Kafka / Redpanda consumer → PFC
+- [pfc-grafana](https://github.com/ImpossibleForge/pfc-grafana) — Grafana data source plugin for PFC archives
 
 **Query & Gateway**
 - [pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway) — HTTP REST API: ingest + query, no DuckDB required
