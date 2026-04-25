@@ -33,15 +33,6 @@ Ratios measured on 200 MB JSONL log data (8 services, mixed log levels, ~961K li
 
 ---
 
-## What's New in v3.4
-
-- **DuckDB Extension** — query `.pfc` files directly from SQL via `read_pfc_jsonl()` ([pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb))
-- **Binary index format** `.pfc.bidx` — fixed-size 32-byte-per-block index, directly readable by the DuckDB C++ extension
-- **`seek-blocks`** primitive — decompress multiple specific blocks in one call (used by DuckDB extension)
-- **Free for personal and open-source use** — no account, no signup required
-
----
-
 ## Install
 
 ### Linux x86_64 & macOS ARM64 — Direct Binary
@@ -62,8 +53,7 @@ curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pf
 pfc_jsonl --help
 ```
 
-> **macOS Intel (x64):** Binary coming soon.
-> **Contact:** info@impossibleforge.com
+> **macOS Intel (x64):** Binary coming soon. Contact: info@impossibleforge.com
 > **Windows:** No native binary. Use WSL2 or a Linux machine.
 
 ---
@@ -96,46 +86,56 @@ See [pfc-duckdb on GitHub](https://github.com/ImpossibleForge/pfc-duckdb) for ma
 
 ---
 
-## Fluent Bit Integration
+## Ingest — Send Data to PFC
 
-Stream logs directly from Fluent Bit into compressed `.pfc` archives using [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit):
+Plug PFC-JSONL into your existing logging or metrics pipeline. All ingest tools buffer data locally, compress when the buffer is full, and optionally upload to S3.
 
-```bash
-pip install pfc-fluentbit
-```
+| Tool | Protocol / Format | Port | Repo |
+|------|-------------------|------|------|
+| **[pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit)** | Fluent Bit output plugin | — | Fluent Bit → `.pfc` |
+| **[pfc-vector](https://github.com/ImpossibleForge/pfc-vector)** | HTTP sink (JSON / NDJSON) | 8766 | Vector.dev → `.pfc` |
+| **[pfc-telegraf](https://github.com/ImpossibleForge/pfc-telegraf)** | HTTP (InfluxDB line protocol + JSON) | 8767 | Telegraf → `.pfc` |
+| **[pfc-otel-collector](https://github.com/ImpossibleForge/pfc-otel-collector)** | OTLP/HTTP (logs, traces, metrics) | 4318 | OpenTelemetry → `.pfc` |
+| **[pfc-kafka-consumer](https://github.com/ImpossibleForge/pfc-kafka-consumer)** | Kafka / Redpanda consumer | — | Kafka topic → `.pfc` |
+| **[pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway)** ↕ | HTTP REST `POST /ingest` | 8765 | Any source → `.pfc` (+ query) |
 
-```ini
-# fluent-bit.conf
-[OUTPUT]
-    Name          pfc
-    Match         *
-    output_dir    /var/log/pfc
-    buffer_mb     64
-    rotate_sec    3600
-```
-
-Archives are written to `/var/log/pfc/` as `.pfc` + `.bidx` files and can be queried with DuckDB or pfc-gateway.
-See [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit) for full configuration options.
+> **pfc-gateway** is bidirectional — it accepts ingest via `POST /ingest` and serves queries via `POST /query`. No DuckDB required.
 
 ---
 
-## Python Package
+## Query — Read PFC Archives
 
-Use the [pfc Python package](https://github.com/ImpossibleForge/pfc-py) (PyPI: `pfc-jsonl`) to compress, decompress, and query `.pfc` files from Python:
+### DuckDB Extension
+The fastest way to query `.pfc` archives locally — see the [DuckDB Extension](#duckdb-extension) section above.
+
+### pfc-gateway — HTTP REST API
+
+Query `.pfc` archives over HTTP without DuckDB — works with any language, curl, Grafana, or PowerBI:
 
 ```bash
-pip install pfc-jsonl
+# Start the gateway (points at your archive directory)
+PFC_ARCHIVE_DIR=/var/lib/pfc PFC_API_KEY=secret \
+  python3 pfc_gateway.py --port 8765
+
+# Query a time range
+curl -X POST http://localhost:8765/query \
+  -H "x-api-key: secret" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "file": "/var/lib/pfc/logs_20260101.pfc",
+    "from_ts": "2026-01-01T10:00:00Z",
+    "to_ts":   "2026-01-01T11:00:00Z"
+  }'
+
+# Query multiple files at once
+curl -X POST http://localhost:8765/query/batch \
+  -H "x-api-key: secret" \
+  -H "Content-Type: application/json" \
+  -d '{"files": ["/var/lib/pfc/logs_20260101.pfc", "/var/lib/pfc/logs_20260102.pfc"]}'
 ```
 
-```python
-import pfc
-
-pfc.compress("logs/app.jsonl", "logs/app.pfc")
-pfc.query("logs/app.pfc",
-          from_ts="2026-01-15T08:00:00",
-          to_ts="2026-01-15T09:00:00",
-          output_path="logs/morning.jsonl")
-```
+Also supports **Grafana SimpleJSON** — point the Grafana data source at `http://localhost:8765/grafana`.
+See [pfc-gateway on GitHub](https://github.com/ImpossibleForge/pfc-gateway) for full documentation.
 
 ---
 
@@ -163,6 +163,26 @@ pfc-migrate gcs --bucket my-logs --prefix 2025/ --out-bucket my-logs-pfc
 
 ---
 
+## Python Package
+
+Use the [pfc Python package](https://github.com/ImpossibleForge/pfc-py) (PyPI: `pfc-jsonl`) to compress, decompress, and query `.pfc` files from Python:
+
+```bash
+pip install pfc-jsonl
+```
+
+```python
+import pfc
+
+pfc.compress("logs/app.jsonl", "logs/app.pfc")
+pfc.query("logs/app.pfc",
+          from_ts="2026-01-15T08:00:00",
+          to_ts="2026-01-15T09:00:00",
+          output_path="logs/morning.jsonl")
+```
+
+---
+
 ## Commands
 
 | Command | Description |
@@ -175,7 +195,6 @@ pfc-migrate gcs --bucket my-logs --prefix 2025/ --out-bucket my-logs-pfc
 | `pfc_jsonl info <input>` | Show block table + timestamp ranges |
 
 ---
-
 
 ## Input Format
 
@@ -200,20 +219,26 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 
 ---
 
+## Related Repos
 
-## Related repos
+**Ingest**
+- [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit) — Fluent Bit output plugin → PFC
+- [pfc-vector](https://github.com/ImpossibleForge/pfc-vector) — Vector.dev HTTP sink → PFC (Rust)
+- [pfc-telegraf](https://github.com/ImpossibleForge/pfc-telegraf) — Telegraf HTTP output plugin → PFC
+- [pfc-otel-collector](https://github.com/ImpossibleForge/pfc-otel-collector) — OpenTelemetry OTLP/HTTP → PFC
+- [pfc-kafka-consumer](https://github.com/ImpossibleForge/pfc-kafka-consumer) — Kafka / Redpanda consumer → PFC
 
-- [pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway) — HTTP REST gateway — ingest + query, no DuckDB
-- [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit) — live Fluent Bit → PFC pipeline
-- [pfc-vector](https://github.com/ImpossibleForge/pfc-vector) — high-performance Rust ingest daemon for Vector.dev
-- [pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate) — one-shot export and archive conversion
-- [pfc-py](https://github.com/ImpossibleForge/pfc-py) — Python client library for PFC
-- [pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb) — DuckDB extension for SQL queries on PFC files
+**Query & Gateway**
+- [pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway) — HTTP REST API: ingest + query, no DuckDB required
+- [pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb) — DuckDB community extension for SQL queries on PFC files
+
+**Archive & Migration**
+- [pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate) — convert gzip/zstd/lz4/bz2 archives → PFC (local, S3, Azure, GCS)
 - [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) — autonomous archive daemon for CrateDB
 - [pfc-archiver-questdb](https://github.com/ImpossibleForge/pfc-archiver-questdb) — autonomous archive daemon for QuestDB
-- [pfc-otel-collector](https://github.com/ImpossibleForge/pfc-otel-collector) — OpenTelemetry OTLP/HTTP log exporter
-- [pfc-kafka-consumer](https://github.com/ImpossibleForge/pfc-kafka-consumer) — Kafka / Redpanda consumer → PFC
-- [pfc-telegraf](https://github.com/ImpossibleForge/pfc-telegraf) — Telegraf HTTP output plugin -> PFC
+
+**SDK**
+- [pfc-py](https://github.com/ImpossibleForge/pfc-py) — Python client library (PyPI: `pfc-jsonl`)
 
 ---
 
