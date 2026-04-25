@@ -99,9 +99,6 @@ See [pfc-duckdb on GitHub](https://github.com/ImpossibleForge/pfc-duckdb) for ma
 ## Fluent Bit Integration
 
 Stream logs directly from Fluent Bit into compressed `.pfc` archives using [pfc-fluentbit](https://github.com/ImpossibleForge/pfc-fluentbit):
-[![Vector](https://img.shields.io/badge/Vector-Sink-6B40BF.svg)](https://github.com/ImpossibleForge/pfc-vector)
-[![Telegraf](https://img.shields.io/badge/Telegraf-Plugin-00acac.svg)](https://github.com/ImpossibleForge/pfc-telegraf)
-[![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-Collector-425CC7.svg)](https://github.com/ImpossibleForge/pfc-otel-collector)
 
 ```ini
 # fluent-bit.conf
