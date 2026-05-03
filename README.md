@@ -235,6 +235,10 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 
 **Archive & Migration**
 - [pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate) — convert gzip/zstd/lz4/bz2 archives → PFC (local, S3, Azure, GCS)
+- [pfc-convert](https://github.com/ImpossibleForge/pfc-convert) — convert Apache CLF, nginx, CSV, NDJSON → JSONL → PFC (schema conversion)
+- [pfc-ingest-watchdog](https://github.com/ImpossibleForge/pfc-ingest-watchdog) — auto-convert when new files arrive in folder or S3 (calls pfc-convert or pfc-migrate)
+- [pfc-export-cratedb](https://github.com/ImpossibleForge/pfc-export-cratedb) — one-shot CrateDB table export → PFC
+- [pfc-export-questdb](https://github.com/ImpossibleForge/pfc-export-questdb) — one-shot QuestDB table export → PFC
 - [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) — autonomous archive daemon for CrateDB
 - [pfc-archiver-questdb](https://github.com/ImpossibleForge/pfc-archiver-questdb) — autonomous archive daemon for QuestDB
 
