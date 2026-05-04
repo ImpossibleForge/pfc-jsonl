@@ -239,8 +239,10 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 - [pfc-ingest-watchdog](https://github.com/ImpossibleForge/pfc-ingest-watchdog) — auto-convert when new files arrive in folder or S3 (calls pfc-convert or pfc-migrate)
 - [pfc-export-cratedb](https://github.com/ImpossibleForge/pfc-export-cratedb) — one-shot CrateDB table export → PFC
 - [pfc-export-questdb](https://github.com/ImpossibleForge/pfc-export-questdb) — one-shot QuestDB table export → PFC
+- [pfc-export-clickhouse](https://github.com/ImpossibleForge/pfc-export-clickhouse) — one-shot ClickHouse table export → PFC (supports ClickHouse Cloud)
 - [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) — autonomous archive daemon for CrateDB
 - [pfc-archiver-questdb](https://github.com/ImpossibleForge/pfc-archiver-questdb) — autonomous archive daemon for QuestDB
+- [pfc-archiver-clickhouse](https://github.com/ImpossibleForge/pfc-archiver-clickhouse) — autonomous archive daemon for ClickHouse
 
 **SDK**
 - [pfc-py](https://github.com/ImpossibleForge/pfc-py) — Python client library (PyPI: `pfc-jsonl`)
