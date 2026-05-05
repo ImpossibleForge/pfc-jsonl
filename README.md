@@ -243,6 +243,7 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 - [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) — autonomous archive daemon for CrateDB
 - [pfc-archiver-questdb](https://github.com/ImpossibleForge/pfc-archiver-questdb) — autonomous archive daemon for QuestDB
 - [pfc-archiver-clickhouse](https://github.com/ImpossibleForge/pfc-archiver-clickhouse) — autonomous archive daemon for ClickHouse
+- [pfc-archiver-influxdb](https://github.com/ImpossibleForge/pfc-archiver-influxdb) — autonomous archive daemon for InfluxDB 2.x
 
 **SDK**
 - [pfc-py](https://github.com/ImpossibleForge/pfc-py) — Python client library (PyPI: `pfc-jsonl`)
