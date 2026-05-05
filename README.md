@@ -240,6 +240,7 @@ To query a time range, only the relevant blocks are decompressed — the rest is
 - [pfc-export-cratedb](https://github.com/ImpossibleForge/pfc-export-cratedb) — one-shot CrateDB table export → PFC
 - [pfc-export-questdb](https://github.com/ImpossibleForge/pfc-export-questdb) — one-shot QuestDB table export → PFC
 - [pfc-export-clickhouse](https://github.com/ImpossibleForge/pfc-export-clickhouse) — one-shot ClickHouse table export → PFC (supports ClickHouse Cloud)
+- [pfc-export-influxdb](https://github.com/ImpossibleForge/pfc-export-influxdb) — one-shot InfluxDB 2.x measurement export → PFC (supports InfluxDB Cloud)
 - [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) — autonomous archive daemon for CrateDB
 - [pfc-archiver-questdb](https://github.com/ImpossibleForge/pfc-archiver-questdb) — autonomous archive daemon for QuestDB
 - [pfc-archiver-clickhouse](https://github.com/ImpossibleForge/pfc-archiver-clickhouse) — autonomous archive daemon for ClickHouse
