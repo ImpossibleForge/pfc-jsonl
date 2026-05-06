@@ -17,6 +17,7 @@ PFC-JSONL stores a block index alongside every compressed file. Query a time win
 [![PyPI](https://img.shields.io/badge/PyPI-pfc--jsonl-blue.svg)](https://pypi.org/project/pfc-jsonl/)
 [![Awesome DuckDB](https://awesome.re/mentioned-badge.svg)](https://github.com/davidgasquez/awesome-duckdb)
 [![Awesome Observability](https://awesome.re/mentioned-badge.svg)](https://github.com/adriannovegil/awesome-observability)
+[![Awesome Data Engineering](https://awesome.re/mentioned-badge.svg)](https://github.com/igorbarinov/awesome-data-engineering)
 
 ---
 
